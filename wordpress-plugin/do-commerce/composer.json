@@ -1,0 +1,10 @@
+{
+    "name": "oliverk/do-commerce",
+    "description": "WordPress plugin for Do Commerce",
+    "type": "wordpress-plugin",
+    "require": {},
+    "require-dev": {
+        "php-stubs/wordpress-stubs": "^6.0",
+        "php-stubs/woocommerce-stubs": "^8.0"
+    }
+}

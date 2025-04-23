@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  # Frontend React App
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_API_URL=/api
+    depends_on:
+      - api-gateway
+    restart: unless-stopped
+    networks:
+      - docommerce
+
+  # API Gateway con Nginx (per proxying e serving statico)
+  api-gateway:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./client/dist:/usr/share/nginx/html
+    depends_on:
+      - firebase-emulator
+    restart: unless-stopped
+    networks:
+      - docommerce
+
+  # Firebase Emulator Suite
+  firebase-emulator:
+    build:
+      context: ./firebase
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000" # UI Emulator
+      - "5001:5001" # Functions
+      - "8080:8080" # Firestore
+      - "9099:9099" # Auth
+    volumes:
+      - ./firebase:/app
+      - firebase-data:/app/data
+    environment:
+      - FIREBASE_AUTH_EMULATOR_HOST=0.0.0.0:9099
+      - FIRESTORE_EMULATOR_HOST=0.0.0.0:8080
+      - FUNCTIONS_EMULATOR_HOST=0.0.0.0:5001
+    command: firebase emulators:start --import=./data --export-on-exit
+    networks:
+      - docommerce
+
+  # Container per email dev (visualizza le email anziché inviarle)
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025" # SMTP Server
+      - "8025:8025" # Web UI
+    networks:
+      - docommerce
+
+volumes:
+  firebase-data:
+    driver: local
+
+networks:
+  docommerce:
+    driver: bridge

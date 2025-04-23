@@ -1,0 +1,122 @@
+/**
+ * DoCommerce Admin Styles
+ */
+
+/* Stile header DoCommerce */
+.docommerce-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+}
+
+.docommerce-logo img {
+    max-height: 50px;
+}
+
+.docommerce-version {
+    color: #606a73;
+    font-size: 14px;
+}
+
+/* Layout contenuti admin */
+.docommerce-admin-content {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.docommerce-admin-main {
+    flex: 2;
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+}
+
+.docommerce-admin-sidebar {
+    flex: 1;
+}
+
+.docommerce-admin-box {
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.docommerce-admin-box h3 {
+    margin-top: 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.docommerce-admin-box h4 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.docommerce-admin-box code {
+    background: #f6f7f7;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+/* Stile log attività */
+.docommerce-log-actions {
+    margin: 15px 0;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.docommerce-log-container {
+    margin-top: 20px;
+    background: #fff;
+    padding: 15px;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+}
+
+.docommerce-empty-log {
+    padding: 20px;
+    text-align: center;
+    color: #777;
+}
+
+.docommerce-log-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.log-action {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.log-action-create {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.log-action-bulk {
+    background-color: #cce5ff;
+    color: #004085;
+}
+
+/* Responsiveness */
+@media screen and (max-width: 782px) {
+    .docommerce-admin-content {
+        flex-direction: column;
+    }
+
+    .docommerce-admin-sidebar {
+        margin-top: 20px;
+    }
+}

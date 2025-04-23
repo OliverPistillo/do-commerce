@@ -1,0 +1,40 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Regole per la collezione userSites
+    match /userSites/{email} {
+      // Solo utenti autenticati possono leggere i propri siti assegnati
+      allow read: if request.auth != null && request.auth.token.email == email;
+
+      // Solo gli amministratori possono modificare le assegnazioni siti
+      allow write: if isAdmin();
+    }
+
+    // Regole per la collezione settings
+    match /settings/{document=**} {
+      // Solo gli amministratori possono leggere e modificare le impostazioni
+      allow read, write: if isAdmin();
+    }
+
+    // Regole per la collezione email_notifications
+    match /email_notifications/{notificationId} {
+      // Gli utenti possono leggere le proprie notifiche
+      allow read: if request.auth != null &&
+                   resource.data.to == request.auth.token.email;
+
+      // Gli utenti possono creare notifiche per se stessi
+      allow create: if request.auth != null &&
+                     request.resource.data.to == request.auth.token.email;
+
+      // Solo gli amministratori possono modificare o eliminare notifiche
+      allow update, delete: if isAdmin();
+    }
+
+    // Funzione helper per verificare se l'utente è un amministratore
+    function isAdmin() {
+      return request.auth != null &&
+             exists(/databases/$(database)/documents/settings/admins) &&
+             request.auth.token.email in get(/databases/$(database)/documents/settings/admins).data.emails;
+    }
+  }
+}
